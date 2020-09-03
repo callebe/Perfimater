@@ -1,0 +1,17 @@
+[Unit]
+Description=Perfimater, online shell and filemanager
+Requires=docker.service
+After=docker.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+WorkingDirectory=/PerFiMaTer
+ExecStart=/usr/local/bin/docker-compose up
+ExecStop=/usr/local/bin/docker-compose down
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,65 @@
+version: '3.0'
+
+services:
+
+  PerFiMaTerServer:
+    build:
+      dockerfile: Dockerfile
+      context: ./PerFiMaTer
+    image: callebesb/perfimater
+    volumes :
+      - ./source:/var/www
+      - ./Repository:/var/Repository
+      - /var/run/docker.sock:/var/run/docker.sock
+    container_name: PerFiMaTer
+    cap_add:
+      - SYS_ADMIN
+    networks:
+      networkPerFiMaTer:
+        ipv4_address: 172.0.0.3
+
+  TTydServer:
+    build:
+      dockerfile: Dockerfile
+      context: ./ttyd
+    image: callebesb/ttyd
+    container_name: ttyd
+    depends_on:
+      - "PerFiMaTerServer"
+    environment:
+      - ttydPort=7778
+    networks:
+      networkPerFiMaTer:
+        ipv4_address: 172.0.0.4
+
+  NginxServer:
+    image: nginx:latest
+    ports:
+      - "443:443"
+      - "80:80"
+      - "7778:7778"
+    volumes :
+      - ./nginx/.htpasswd:/etc/nginx/conf.d/.htpasswd
+      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/ssl-params.conf:/etc/nginx/snippets/ssl-params.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    container_name: Nginx
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      - "PerFiMaTerServer"
+    networks:
+      networkPerFiMaTer:
+        ipv4_address: 172.0.0.2
+
+
+networks:
+  networkPerFiMaTer:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.0.0.0/16

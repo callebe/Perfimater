@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>PerFiMaTer</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="landing is-preload">
+
+        <!-- Page Wrapper -->
+        <div id="page-wrapper">
+
+            <!-- Banner -->
+            <section id="banner">
+                <div class="inner">
+                    <p><img src="images/coruja.svg" alt="Coruja" class="responsive"   styler="width:50%;
+                        height: auto;"></p>
+                    <h2>PerFiMaTer</h2>
+                    <p>Online SSH Shell and File Repository,<br />
+                    with no responsability for your files<br />
+                </div>
+                <a href="#cta" class="more scrolly">Learn More</a>
+            </section>
+
+            <!-- Authenfication -->
+            <section id="cta" class="wrapper style4">
+                <div class="inner">
+                    <header>
+                        <h2>Login</h2>
+                        <sup>Please insert your authentification credentials to access your personal area. </p>
+                    </header>
+                    <ul class="actions stacked">
+                        <li>
+                            <div class="login-container">
+                                <form action="/" id="LoginForm" method="POST">
+                                    <sup class="redAlert"><?php if($authError == 1) echo "Incorrect user or password!"; ?></sup>
+                                    <input id="Username" type="text" placeholder="Username" name="pfmt_user" style="margin-bottom: 6px;">
+                                    <input id="Password" type="password" placeholder="Password" name="pfmt_password" style="margin-bottom: 12px;">
+                                    <button type="submit" class="button fit primary" style="margin : 5px;" id="Submitbt">Login</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </body>
+
+	<!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+    <?php
+        if($authError == 1){
+            echo " 
+                <script>
+                    $(document).ready(function() {
+                        window.scrollTo(0,document.querySelector(\"#cta\").scrollHeight);
+                    });
+                </script>
+            ";
+        }
+    ?>
+
+</html>
